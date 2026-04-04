@@ -1,0 +1,16 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "react",
+  "env": {
+    "MONGODB_URI": "@mongodb_uri",
+    "NODE_ENV": "production",
+    "REACT_APP_API_URL": "@react_app_api_url"
+  },
+  "functions": {
+    "backend/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  }
+}
