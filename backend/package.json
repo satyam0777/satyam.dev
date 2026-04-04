@@ -1,0 +1,20 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "```\r backend/\r ├── config/\r │   └── database.js          # MongoDB connection setup\r ├── models/\r │   ├── Project.js           # Project MongoDB schema\r │   └── Blog.js              # Blog MongoDB schema\r ├── routes/\r │   ├── projects.js          # Projects API endpoints\r │   └── blogs.js             # Blogs API endpoints\r ├── middleware/\r │   └── errorHandler.js      # Global error handling\r ├── scripts/\r │   └── seed.js              # Database seeder\r ├── server.js                # Main Express server\r ├── .env.example             # Environment template\r └── README.md                # This file\r ```",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "mongoose": "^7.0.0"
+  }
+}
