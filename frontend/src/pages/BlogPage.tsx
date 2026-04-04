@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useBlog } from '../context/BlogContext';
 
 const BlogPage: React.FC = () => {
-  const { blogs } = useBlog();
+  const { blogs, refreshBlogs } = useBlog();
+
+  // Refresh data when page mounts
+  useEffect(() => {
+    refreshBlogs();
+  }, []);
+
   const published = blogs.filter(b => b.published);
 
   return (

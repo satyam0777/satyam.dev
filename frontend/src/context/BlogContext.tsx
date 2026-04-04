@@ -259,6 +259,7 @@ export interface BlogContextType {
   addBlog: (blog: BlogPost) => Promise<void>;
   updateBlog: (blog: BlogPost) => Promise<void>;
   deleteBlog: (id: string) => Promise<void>;
+  refreshBlogs: () => Promise<void>;
   loading: boolean;
   error: string | null;
 }
@@ -270,6 +271,7 @@ const BlogContext = createContext<BlogContextType>({
   addBlog: async () => {},
   updateBlog: async () => {},
   deleteBlog: async () => {},
+  refreshBlogs: async () => {},
   loading: false,
   error: null,
 });
@@ -279,38 +281,50 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Get auth token from sessionStorage
+  const getAuthHeader = () => {
+    const token = sessionStorage.getItem('sp-admin-token');
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  };
+
+  // Fetch blogs from API
+  const fetchBlogs = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/blogs`);
+      if (!response.ok) throw new Error('Failed to fetch blogs');
+      const data = await response.json();
+      setBlogs(data || INITIAL_BLOGS);
+      localStorage.setItem('sp-blogs', JSON.stringify(data || INITIAL_BLOGS));
+      setError(null);
+    } catch (err) {
+      console.warn('API unavailable, using localStorage:', err);
+      try {
+        const saved = localStorage.getItem('sp-blogs');
+        setBlogs(saved ? JSON.parse(saved) : INITIAL_BLOGS);
+      } catch {
+        setBlogs(INITIAL_BLOGS);
+      }
+      setError(err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Fetch blogs on mount
   useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(`${API_URL}/blogs`);
-        if (!response.ok) throw new Error('Failed to fetch blogs');
-        const data = await response.json();
-        setBlogs(data || INITIAL_BLOGS);
-        localStorage.setItem('sp-blogs', JSON.stringify(data || INITIAL_BLOGS));
-        setError(null);
-      } catch (err) {
-        console.warn('API unavailable, using localStorage:', err);
-        try {
-          const saved = localStorage.getItem('sp-blogs');
-          setBlogs(saved ? JSON.parse(saved) : INITIAL_BLOGS);
-        } catch {
-          setBlogs(INITIAL_BLOGS);
-        }
-        setError(err instanceof Error ? err.message : 'Unknown error');
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchBlogs();
   }, []);
+
+  const refreshBlogs = async () => {
+    await fetchBlogs();
+  };
 
   const addBlog = async (blog: BlogPost) => {
     try {
       const response = await fetch(`${API_URL}/blogs`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
         body: JSON.stringify(blog),
       });
       if (!response.ok) throw new Error('Failed to add blog');
@@ -330,7 +344,7 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await fetch(`${API_URL}/blogs/${blog.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
         body: JSON.stringify(blog),
       });
       if (!response.ok) throw new Error('Failed to update blog');
@@ -349,6 +363,7 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await fetch(`${API_URL}/blogs/${id}`, {
         method: 'DELETE',
+        headers: getAuthHeader(),
       });
       if (!response.ok) throw new Error('Failed to delete blog');
       const updated = blogs.filter(b => b.id !== id);
@@ -363,7 +378,7 @@ export const BlogProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const value = useMemo(
-    () => ({ blogs, addBlog, updateBlog, deleteBlog, loading, error }),
+    () => ({ blogs, addBlog, updateBlog, deleteBlog, refreshBlogs, loading, error }),
     [blogs, loading, error]
   );
 

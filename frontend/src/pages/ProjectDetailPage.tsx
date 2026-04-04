@@ -1,24 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { ArrowLeft, GitBranch, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import { useProject } from '../context/ProjectContext';
-
-const Tag: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, padding: '3px 10px', background: 'var(--tag-bg)', color: 'var(--tag-color)', borderRadius: 4 }}>{children}</span>
-);
-
-const Section: React.FC<{ title: string; children: React.ReactNode; accent?: boolean }> = ({ title, children, accent }) => (
-  <div style={{ background: 'var(--bg-surface)', border: `1px solid ${accent ? 'rgba(0,255,148,0.2)' : 'var(--border)'}`, borderRadius: 10, padding: '2rem', marginBottom: '1.25rem' }}>
-    <h3 style={{ fontFamily: "'Syne', sans-serif", fontSize: '1.1rem', fontWeight: 700, marginBottom: '1.25rem', color: accent ? 'var(--accent)' : 'var(--text-primary)' }}>{title}</h3>
-    {children}
-  </div>
-);
+import { Tag, Section } from '../components/UI';
 
 const ProjectDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { projects } = useProject();
-  const project = projects.find(p => p.id === id);
+  const { projects, refreshProjects } = useProject();
   const [expandedDecision, setExpandedDecision] = useState<number | null>(null);
+
+  // Refresh data when page mounts
+  useEffect(() => {
+    refreshProjects();
+  }, []);
+
+  const project = projects.find(p => p.id === id);
 
   if (!project) return <Navigate to="/projects" replace />;
 

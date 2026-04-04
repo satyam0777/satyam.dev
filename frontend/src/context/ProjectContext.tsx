@@ -73,6 +73,7 @@ export interface ProjectContextType {
   addProject: (project: Project) => Promise<void>;
   updateProject: (project: Project) => Promise<void>;
   deleteProject: (id: string) => Promise<void>;
+  refreshProjects: () => Promise<void>;
   loading: boolean;
   error: string | null;
 }
@@ -82,6 +83,7 @@ const ProjectContext = createContext<ProjectContextType>({
   addProject: async () => {},
   updateProject: async () => {},
   deleteProject: async () => {},
+  refreshProjects: async () => {},
   loading: false,
   error: null,
 });
@@ -91,38 +93,50 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Get auth token from sessionStorage
+  const getAuthHeader = () => {
+    const token = sessionStorage.getItem('sp-admin-token');
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  };
+
+  // Fetch projects from API
+  const fetchProjects = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/projects`);
+      if (!response.ok) throw new Error('Failed to fetch projects');
+      const data = await response.json();
+      setProjects(data || INITIAL_PROJECTS);
+      localStorage.setItem('sp-projects', JSON.stringify(data || INITIAL_PROJECTS));
+      setError(null);
+    } catch (err) {
+      console.warn('API unavailable, using localStorage:', err);
+      try {
+        const saved = localStorage.getItem('sp-projects');
+        setProjects(saved ? JSON.parse(saved) : INITIAL_PROJECTS);
+      } catch {
+        setProjects(INITIAL_PROJECTS);
+      }
+      setError(err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Fetch projects on mount
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(`${API_URL}/projects`);
-        if (!response.ok) throw new Error('Failed to fetch projects');
-        const data = await response.json();
-        setProjects(data || INITIAL_PROJECTS);
-        localStorage.setItem('sp-projects', JSON.stringify(data || INITIAL_PROJECTS));
-        setError(null);
-      } catch (err) {
-        console.warn('API unavailable, using localStorage:', err);
-        try {
-          const saved = localStorage.getItem('sp-projects');
-          setProjects(saved ? JSON.parse(saved) : INITIAL_PROJECTS);
-        } catch {
-          setProjects(INITIAL_PROJECTS);
-        }
-        setError(err instanceof Error ? err.message : 'Unknown error');
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchProjects();
   }, []);
+
+  const refreshProjects = async () => {
+    await fetchProjects();
+  };
 
   const addProject = async (project: Project) => {
     try {
       const response = await fetch(`${API_URL}/projects`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
         body: JSON.stringify(project),
       });
       if (!response.ok) throw new Error('Failed to add project');
@@ -142,7 +156,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     try {
       const response = await fetch(`${API_URL}/projects/${project.id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
         body: JSON.stringify(project),
       });
       if (!response.ok) throw new Error('Failed to update project');
@@ -161,6 +175,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
     try {
       const response = await fetch(`${API_URL}/projects/${id}`, {
         method: 'DELETE',
+        headers: getAuthHeader(),
       });
       if (!response.ok) throw new Error('Failed to delete project');
       const updated = projects.filter(p => p.id !== id);
@@ -175,7 +190,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const value = useMemo(
-    () => ({ projects, addProject, updateProject, deleteProject, loading, error }),
+    () => ({ projects, addProject, updateProject, deleteProject, refreshProjects, loading, error }),
     [projects, loading, error]
   );
 

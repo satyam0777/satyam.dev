@@ -1,27 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, GitBranch } from 'lucide-react';
 import { useProject } from '../context/ProjectContext';
-
-const Tag: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, padding: '3px 10px', background: 'var(--tag-bg)', color: 'var(--tag-color)', borderRadius: 4 }}>{children}</span>
-);
-
-const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
-  const map: Record<string, { bg: string; color: string; label: string }> = {
-    live:     { bg: 'rgba(0,200,100,0.1)',   color: '#00c864', label: '● Live' },
-    building: { bg: 'rgba(255,165,0,0.1)',   color: '#ffa500', label: '⚡ Building' },
-    planned:  { bg: 'rgba(100,100,255,0.1)', color: '#8888ff', label: '◦ Planned' },
-  };
-  const c = map[status] || map.planned;
-  return <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, padding: '3px 10px', background: c.bg, color: c.color, borderRadius: 4, letterSpacing: '0.06em' }}>{c.label}</span>;
-};
+import { Tag, StatusBadge } from '../components/UI';
 
 type Filter = 'all' | 'fullstack' | 'backend';
 
 const ProjectsPage: React.FC = () => {
-  const { projects } = useProject();
+  const { projects, refreshProjects } = useProject();
   const [filter, setFilter] = useState<Filter>('all');
+
+  // Refresh data when page mounts
+  useEffect(() => {
+    refreshProjects();
+  }, []);
+
   const filtered = filter === 'all' ? projects : projects.filter(p => p.type === filter);
 
   return (

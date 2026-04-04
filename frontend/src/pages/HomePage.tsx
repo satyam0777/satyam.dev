@@ -1,38 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, GitBranch, Mail, ExternalLink, Database, Zap, BookOpen, Terminal, Download, Link2, Share2 } from 'lucide-react';
 import { useProject } from '../context/ProjectContext';
 import { useBlog } from '../context/BlogContext';
-
-const Tag: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, padding: '3px 10px', background: 'var(--tag-bg)', color: 'var(--tag-color)', borderRadius: 4, letterSpacing: '0.04em' }}>{children}</span>
-);
-
-const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
-  const colors: Record<string, { bg: string; color: string }> = {
-    live: { bg: 'rgba(0,200,100,0.1)', color: '#00c864' },
-    building: { bg: 'rgba(255,165,0,0.1)', color: '#ffa500' },
-    planned: { bg: 'rgba(100,100,255,0.1)', color: '#8888ff' },
-  };
-  const c = colors[status] || colors.planned;
-  return (
-    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, padding: '3px 10px', background: c.bg, color: c.color, borderRadius: 4, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-      {status === 'building' ? '⚡ Building' : status === 'live' ? '● Live' : '◦ Planned'}
-    </span>
-  );
-};
-
-const SectionLabel: React.FC<{ num: string; label: string }> = ({ num, label }) => (
-  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: '0.6rem' }}>
-    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--accent)', letterSpacing: '0.12em' }}>{num}</span>
-    <span style={{ height: 1, width: 32, background: 'var(--border-bright)', display: 'block' }} />
-    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</span>
-  </div>
-);
+import { Tag, StatusBadge, SectionLabel } from '../components/UI';
 
 const HomePage: React.FC = () => {
-  const { projects } = useProject();
-  const { blogs } = useBlog();
+  const { projects, refreshProjects } = useProject();
+  const { blogs, refreshBlogs } = useBlog();
+
+  // Refresh data when page mounts
+  useEffect(() => {
+    refreshProjects();
+    refreshBlogs();
+  }, []);
+
   const featuredProjects = projects.slice(0, 3);
   const publishedBlogs = blogs.filter(b => b.published).slice(0, 3);
 
@@ -82,20 +64,7 @@ const HomePage: React.FC = () => {
             </Link>
           </div>
 
-          {/* Stats row */}
-          {/* <div className="fade-up delay-5" style={{ display: 'flex', gap: '2.5rem', marginTop: '3.5rem', paddingTop: '2rem', borderTop: '1px solid var(--border)', flexWrap: 'wrap' }}>
-            {[
-              { num: '5+', label: 'Production Apps' },
-              { num: '250+', label: 'DSA Problems' },
-              { num: '50+', label: 'APIs Built' },
-              { num: '1', label: 'NPM Package' },
-            ].map(s => (
-              <div key={s.label}>
-                <div style={{ fontFamily: "'Syne', sans-serif", fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-primary)' }}>{s.num}</div>
-                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text-muted)', letterSpacing: '0.08em', marginTop: 2 }}>{s.label}</div>
-              </div>
-            ))}
-          </div> */}
+
         </div>
       </section>
 

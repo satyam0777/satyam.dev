@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { useBlog } from '../context/BlogContext';
@@ -9,8 +9,14 @@ import { useTheme } from '../context/ThemeContext';
 
 const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { blogs } = useBlog();
+  const { blogs, refreshBlogs } = useBlog();
   const { theme } = useTheme();
+
+  // Refresh data when page mounts
+  useEffect(() => {
+    refreshBlogs();
+  }, []);
+
   const post = blogs.find(b => b.slug === slug && b.published);
 
   if (!post) return <Navigate to="/blog" replace />;
