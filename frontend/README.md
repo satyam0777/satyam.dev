@@ -2,7 +2,7 @@
 
 A modern, responsive portfolio website showcasing projects, blog posts, and engineering insights. Built with **React 19**, **TypeScript**, and **Vite**.
 
-## 🎯 Features
+## Features
 
 - **Responsive Design** - Mobile-first approach with 3 breakpoints (mobile, tablet, desktop)
 - **Dark/Light Theme** - Toggle between dark and light modes with localStorage persistence
@@ -13,7 +13,7 @@ A modern, responsive portfolio website showcasing projects, blog posts, and engi
 - **Live Project Links** - Display live demos alongside GitHub repositories
 - **SEO Friendly** - Optimized for search engines with meta tags and semantic HTML
 
-## 🛠 Tech Stack
+##  Tech Stack
 
 - **Frontend Framework**: React 19.2.4
 - **Language**: TypeScript 4.9.5
@@ -24,7 +24,7 @@ A modern, responsive portfolio website showcasing projects, blog posts, and engi
 - **State Management**: React Context API + useMemo/useCallback optimization
 - **Styling**: CSS3 with CSS Variables
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 src/
@@ -55,7 +55,7 @@ public/
 └── manifest.json                # PWA manifest
 ```
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - Node.js 16+ and npm
@@ -64,7 +64,7 @@ public/
 
 ```bash
 # Clone the repository
-git clone https://github.com/satyam0777/satyam-portfolio-complete.git
+git clone https://github.com/satyam0777/satyam.dev.git
 cd satyam-portfolio-complete
 
 # Install dependencies
@@ -84,7 +84,7 @@ The app will open at `http://localhost:3000`
 
 ## 🔐 Admin Panel
 
-Access the admin dashboard at `/admin` with PIN: **`satyam2025`**
+
 
 ### Admin Features:
 - **Blog Manager**: Create, edit, publish/draft blog posts
