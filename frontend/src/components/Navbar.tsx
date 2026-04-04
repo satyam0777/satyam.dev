@@ -58,11 +58,11 @@ const Navbar: React.FC = () => {
           }}>
             {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
           </button>
-          <Link to="/admin" style={{
+          {/* <Link to="/admin" style={{
             fontFamily: "'JetBrains Mono', monospace", fontSize: 11,
             padding: '6px 14px', background: 'var(--accent)', color: '#000',
             letterSpacing: '0.06em', fontWeight: 600, borderRadius: 4,
-          }}>Admin</Link>
+          }}>Admin</Link> */}
         </div>
 
         {/* Mobile */}
@@ -81,7 +81,7 @@ const Navbar: React.FC = () => {
             <button onClick={toggleTheme} style={{ background: 'none', border: '1px solid var(--border)', borderRadius: 6, color: 'var(--text-secondary)', cursor: 'pointer', padding: '6px 10px', display: 'flex', alignItems: 'center' }}>
               {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
             </button>
-            <Link to="/admin" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, padding: '6px 14px', background: 'var(--accent)', color: '#000', letterSpacing: '0.06em', fontWeight: 600, borderRadius: 4 }}>Admin</Link>
+            {/* <Link to="/admin" style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, padding: '6px 14px', background: 'var(--accent)', color: '#000', letterSpacing: '0.06em', fontWeight: 600, borderRadius: 4 }}>Admin</Link> */}
           </div>
         </div>
       )}

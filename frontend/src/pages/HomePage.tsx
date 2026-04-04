@@ -46,11 +46,11 @@ const HomePage: React.FC = () => {
             <span style={{ color: 'var(--accent)' }}>&gt;_</span> Full Stack → Backend Specialist · Learning from first principles
           </div>
 
-          <p className="fade-up delay-3" style={{ fontSize: 17, color: 'var(--text-secondary)', maxWidth: 560, lineHeight: 1.75, marginBottom: '2.5rem' }}>
-            Built <strong style={{ color: 'var(--text-primary)', fontWeight: 500 }}>5+ production applications</strong> with real integrations — payments, video calling, AI APIs.
-            Now going deep on <strong style={{ color: 'var(--text-primary)', fontWeight: 500 }}>databases, distributed systems, and real-time infrastructure</strong>.
-           One goal: understand how things <em>actually</em> work at scale.
-          </p>
+         <p className="fade-up delay-3" style={{ fontSize: 17, color: 'var(--text-secondary)', maxWidth: 560, lineHeight: 1.75, marginBottom: '2.5rem' }}>
+            Built <strong style={{ color: 'var(--text-primary)', fontWeight: 500 }}>real-world applications</strong> integrating payments, real-time communication, and AI APIs.
+         Now focused on <strong style={{ color: 'var(--text-primary)', fontWeight: 500 }}>databases, distributed systems, and real-time infrastructure</strong>.
+         One goal: understand how things <em>actually</em> work at scale.
+      </p>
 
           <div className="fade-up delay-4" style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
             <Link to="/projects" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: "'JetBrains Mono', monospace", fontSize: 13, padding: '11px 22px', background: 'var(--accent)', color: '#000', fontWeight: 600, borderRadius: 6, letterSpacing: '0.04em' }}>
@@ -95,7 +95,7 @@ const HomePage: React.FC = () => {
                 { icon: <Link2 size={14} />, label: 'LinkedIn Profile', href: 'https://www.linkedin.com/in/satyam-prajapati-13a690256/' },
                 { icon: <Share2 size={14} />, label: 'Twitter / X', href: 'https://x.com/Satyam9352' },
                 { icon: <Terminal size={14} />, label: '+91 7985792091', href: 'tel:+917985792091' },
-                { icon: <BookOpen size={14} />, label: 'LeetCode: Problems', href: '#' },
+                { icon: <BookOpen size={14} />, label: 'LeetCode: Problems', href: 'https://leetcode.com/u/satyam0777/' },
                 { icon: <Download size={14} />, label: 'Download Resume', href: '/resume.pdf', download: true },
               ].map(item => (
                 <a key={item.label} href={item.href} target={(item as any).download ? undefined : item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer" download={(item as any).download} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0.6rem 0', borderBottom: '1px solid var(--border)', color: 'var(--text-secondary)', fontSize: 13, transition: 'color 0.15s' }}>

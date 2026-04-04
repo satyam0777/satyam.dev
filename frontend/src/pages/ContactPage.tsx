@@ -20,7 +20,8 @@ const ContactPage: React.FC = () => (
               { icon: <Mail size={15} />, label: 'officialsatyam0777@gmail.com', href: 'mailto:officialsatyam0777@gmail.com' },
               { icon: <GitBranch size={15} />, label: 'github.com/satyam0777', href: 'https://github.com/satyam0777' },
               { icon: <Terminal size={15} />, label: '+91 7985792091', href: 'tel:+917985792091' },
-              { icon: <BookOpen size={15} />, label: 'LeetCode — 250+ Problems', href: '#' },
+              { icon: <BookOpen size={15} />, label: 'LeetCode —  Problems', href: 'https://leetcode.com/u/satyam0777/' },
+              
             ].map(item => (
               <a key={item.label} href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer"
                 style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '0.85rem 1.25rem', background: 'var(--bg-surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 14, color: 'var(--text-secondary)', transition: 'border-color 0.15s, color 0.15s', textDecoration: 'none' }}
@@ -37,8 +38,8 @@ const ContactPage: React.FC = () => (
           <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: 'var(--text-muted)', letterSpacing: '0.1em', marginBottom: '1.5rem' }}>SEND A MESSAGE</div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {[
-              { label: 'Your Name', type: 'text', placeholder: 'Ravi Sharma' },
-              { label: 'Email', type: 'email', placeholder: 'ravi@company.com' },
+              { label: 'Your Name', type: 'text', placeholder: 'Your name' },
+              { label: 'Email', type: 'email', placeholder: 'your@company.com' },
               { label: 'Subject', type: 'text', placeholder: 'Internship opportunity / Collaboration / ...' },
             ].map(f => (
               <div key={f.label}>

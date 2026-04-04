@@ -42,7 +42,7 @@ const PORT = process.env.PORT || 5000;
 if (process.env.NODE_ENV !== 'test') {
   connectDB().then(() => {
     app.listen(PORT, () => {
-      console.log(`\n🚀 Backend Server`);
+      console.log(`\n Backend Server`);
       console.log(`   Running at: http://localhost:${PORT}`);
       console.log(`   API: http://localhost:${PORT}/api`);
       console.log(`   Health: http://localhost:${PORT}/api/health\n`);
@@ -50,7 +50,7 @@ if (process.env.NODE_ENV !== 'test') {
   }).catch((err) => {
     // Still start server even if DB connection fails
     app.listen(PORT, () => {
-      console.log(`\n🚀 Backend Server`);
+      console.log(`\n Backend Server`);
       console.log(`   Running at: http://localhost:${PORT}`);
       console.log(`   API: http://localhost:${PORT}/api`);
       console.log(`   Health: http://localhost:${PORT}/api/health`);
