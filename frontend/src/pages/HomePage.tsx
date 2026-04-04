@@ -49,7 +49,7 @@ const HomePage: React.FC = () => {
           <p className="fade-up delay-3" style={{ fontSize: 17, color: 'var(--text-secondary)', maxWidth: 560, lineHeight: 1.75, marginBottom: '2.5rem' }}>
             Built <strong style={{ color: 'var(--text-primary)', fontWeight: 500 }}>5+ production applications</strong> with real integrations — payments, video calling, AI APIs.
             Now going deep on <strong style={{ color: 'var(--text-primary)', fontWeight: 500 }}>databases, distributed systems, and real-time infrastructure</strong>.
-            250+ DSA problems. One goal: understand how things <em>actually</em> work at scale.
+           One goal: understand how things <em>actually</em> work at scale.
           </p>
 
           <div className="fade-up delay-4" style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
