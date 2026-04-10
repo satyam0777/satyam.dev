@@ -6,7 +6,7 @@ import { Tag, Section } from '../components/UI';
 
 const ProjectDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { projects, refreshProjects } = useProject();
+  const { projects, refreshProjects, loading } = useProject();
   const [expandedDecision, setExpandedDecision] = useState<number | null>(null);
 
   // Refresh data when page mounts
@@ -16,6 +16,8 @@ const ProjectDetailPage: React.FC = () => {
 
   const project = projects.find(p => p.id === id);
 
+  // Show loading state while fetching, only redirect if loaded and project not found
+  if (loading) return <div style={{ paddingTop: 80, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', color: 'var(--text-muted)' }}>Loading...</div>;
   if (!project) return <Navigate to="/projects" replace />;
 
   const { architecture: arch } = project;

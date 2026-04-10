@@ -9,7 +9,7 @@ import { useTheme } from '../context/ThemeContext';
 
 const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { blogs, refreshBlogs } = useBlog();
+  const { blogs, refreshBlogs, loading } = useBlog();
   const { theme } = useTheme();
 
   // Refresh data when page mounts
@@ -19,6 +19,8 @@ const BlogPostPage: React.FC = () => {
 
   const post = blogs.find(b => b.slug === slug && b.published);
 
+  // Show loading state while fetching, only redirect if loaded and post not found
+  if (loading) return <div style={{ paddingTop: 80, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', color: 'var(--text-muted)' }}>Loading...</div>;
   if (!post) return <Navigate to="/blog" replace />;
 
   const idx = blogs.filter(b => b.published).findIndex(b => b.slug === slug);

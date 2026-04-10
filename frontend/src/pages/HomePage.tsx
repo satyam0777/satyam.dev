@@ -16,7 +16,7 @@ const HomePage: React.FC = () => {
   }, []);
 
   const featuredProjects = projects.slice(0, 3);
-  const publishedBlogs = blogs.filter(b => b.published).slice(0, 3);
+  const publishedBlogs = blogs.filter(b => b.published).slice(0, 4);
 
   const skills = [
     { group: 'Languages', items: ['JavaScript', 'TypeScript', 'C++', 'SQL'] },
